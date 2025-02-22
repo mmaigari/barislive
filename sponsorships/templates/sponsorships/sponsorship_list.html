@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sponsorship Programs - BCF{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-5">
+    <div class="row">
+        <!-- Sidebar Filters -->
+        <div class="col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Filter Sponsorships</h5>
+                    
+                    <!-- Search Form -->
+                    <form method="get" class="mb-4">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control" 
+                                   placeholder="Search sponsorships..." 
+                                   value="{{ search_query }}">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Categories -->
+                    <h6 class="mb-3">Categories</h6>
+                    <div class="list-group mb-4">
+                        <a href="{% url 'sponsorships:sponsorship-list' %}" 
+                           class="list-group-item list-group-item-action {% if not current_category %}active{% endif %}">
+                            All Programs
+                        </a>
+                        {% for category in categories %}
+                        <a href="{% url 'sponsorships:sponsorship-list' %}?category={{ category.slug }}" 
+                           class="list-group-item list-group-item-action {% if current_category == category.slug %}active{% endif %}">
+                            {{ category.name }}
+                        </a>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Sort Options -->
+                    <h6 class="mb-3">Sort By</h6>
+                    <select class="form-select mb-4" id="sortSelect" onchange="updateSort(this.value)">
+                        <option value="newest" {% if sort_by == 'newest' %}selected{% endif %}>Newest First</option>
+                        <option value="oldest" {% if sort_by == 'oldest' %}selected{% endif %}>Oldest First</option>
+                        <option value="most-sponsors" {% if sort_by == 'most-sponsors' %}selected{% endif %}>Most Sponsors</option>
+                        <option value="least-sponsors" {% if sort_by == 'least-sponsors' %}selected{% endif %}>Least Sponsors</option>
+                        <option value="amount-high" {% if sort_by == 'amount-high' %}selected{% endif %}>Highest Amount</option>
+                        <option value="amount-low" {% if sort_by == 'amount-low' %}selected{% endif %}>Lowest Amount</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-9">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="m-0">
+                    {% if current_category %}
+                        {{ current_category|title }} Programs
+                    {% else %}
+                        All Sponsorship Programs
+                    {% endif %}
+                    <small class="text-muted">({{ sponsorships.paginator.count }} found)</small>
+                </h4>
+                {% if search_query or current_category %}
+                <a href="{% url 'sponsorships:sponsorship-list' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-times"></i> Clear Filters
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Statistics Row -->
+            <div class="row g-4 mb-4">
+                <div class="col-sm-4">
+                    <div class="card bg-light">
+                        <div class="card-body text-center">
+                            <h3 class="card-title">{{ total_sponsorships }}</h3>
+                            <p class="card-text text-muted mb-0">Active Programs</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card bg-light">
+                        <div class="card-body text-center">
+                            <h3 class="card-title">{{ total_sponsors }}</h3>
+                            <p class="card-text text-muted mb-0">Total Sponsors</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card bg-light">
+                        <div class="card-body text-center">
+                            <h3 class="card-title">₦{{ total_amount_raised|floatformat:0 }}</h3>
+                            <p class="card-text text-muted mb-0">Amount Raised</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sponsorships Grid -->
+            <div class="row g-4">
+                {% for sponsorship in sponsorships %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 hover-card">
+                        {% if sponsorship.image %}
+                        <img src="{{ sponsorship.image.url }}" 
+                             class="card-img-top" style="height: 200px; object-fit: cover;" 
+                             alt="{{ sponsorship.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-primary">{{ sponsorship.category.name }}</span>
+                                <small class="text-muted">{{ sponsorship.total_sponsors }} sponsor{{ sponsorship.total_sponsors|pluralize }}</small>
+                            </div>
+                            <h5 class="card-title">{{ sponsorship.title }}</h5>
+                            <p class="card-text text-muted">{{ sponsorship.description|truncatewords:20 }}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="text-primary fw-bold">₦{{ sponsorship.monthly_amount }}/month</span>
+                                <a href="{% url 'sponsorships:sponsorship-detail' sponsorship.slug %}" 
+                                   class="btn btn-outline-primary btn-sm">Support Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="text-center py-5">
+                        <i class="fas fa-heart fa-3x text-muted mb-3"></i>
+                        <h5>No Sponsorship Programs Found</h5>
+                        <p class="text-muted">Try adjusting your filters or search criteria</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if sponsorships.has_other_pages %}
+            <nav class="mt-5">
+                <ul class="pagination justify-content-center">
+                    {% if sponsorships.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ sponsorships.previous_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}">Previous</a>
+                    </li>
+                    {% endif %}
+
+                    {% for num in sponsorships.paginator.page_range %}
+                    <li class="page-item {% if sponsorships.number == num %}active{% endif %}">
+                        <a class="page-link" href="?page={{ num }}{% if current_category %}&category={{ current_category }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}">{{ num }}</a>
+                    </li>
+                    {% endfor %}
+
+                    {% if sponsorships.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ sponsorships.next_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+function updateSort(value) {
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('sort', value);
+    window.location.search = urlParams.toString();
+}
+</script>
+{% endblock %}
+{% endblock %}

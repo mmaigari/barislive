@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}BCF{% endblock %}</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #2C3E50;
+            --secondary-color: #27AE60;
+        }
+        
+        .hero-section {
+            background-color: var(--primary-color);
+            padding: 6rem 0;
+        }
+        
+        .navbar {
+            background-color: var(--primary-color);
+            padding: 1rem 2rem;
+        }
+        
+        .header-section {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .category-filter {
+            border: 2px solid var(--primary-color);
+            padding: 0.5rem 2rem;
+            margin: 0 0.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: all 0.3s;
+        }
+        
+        .category-filter.active,
+        .category-filter:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .case-card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .case-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .donate-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+        }
+        
+        .donate-btn:hover {
+            background-color: #219a52;
+            color: white;
+        }
+        
+        .breadcrumb {
+            margin-bottom: 0;
+        }
+        
+        .nav-tabs {
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .nav-tabs .nav-link {
+            color: #495057;
+            border: none;
+            border-bottom: 2px solid transparent;
+            padding: 0.5rem 1rem;
+            margin-bottom: -1px;
+        }
+        
+        .nav-tabs .nav-link:hover {
+            border-color: transparent;
+            color: var(--secondary-color);
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            font-weight: 500;
+        }
+        
+        .case-metadata p {
+            margin-bottom: 0.5rem;
+            color: #495057;
+        }
+        
+        .case-metadata strong {
+            color: #212529;
+            margin-right: 0.5rem;
+        }
+        
+        hr {
+            border-top: 1px solid #dee2e6;
+            margin: 2rem 0;
+        }
+        
+        .case-description {
+            color: #495057;
+            line-height: 1.6;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        .related-case .card {
+            transition: transform 0.2s;
+        }
+        
+        .related-case .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .progress {
+            height: 0.5rem;
+            border-radius: 1rem;
+        }
+        
+        .progress-bar {
+            background-color: var(--secondary-color);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% include 'includes/nav.html' %}
+    <div class="nav-spacer d-none"></div>
+    {% block content %}{% endblock %}
+    
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-NG', {
+                style: 'currency',
+                currency: 'NGN',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount).replace('NGN', '₦');
+        }
+
+        // Replace $ with ₦ in any existing numbers
+        document.querySelectorAll('.currency').forEach(el => {
+            const amount = parseFloat(el.textContent.replace(/[^0-9.-]+/g, ''));
+            if (!isNaN(amount)) {
+                el.textContent = `₦${amount.toFixed(2)}`;
+            }
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,513 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - Baris Charity Foundation{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section position-relative d-flex align-items-center text-white py-5" style="height: 500px;">
+    <div class="hero-bg position-absolute w-100 h-100" 
+         style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{% static 'img/rr.jpg' %}') no-repeat center center; background-size: cover;">
+    </div>
+    <div class="container position-relative">
+        <div class="text-center">
+            <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInUp">About Baris Charity Foundation</h1>
+            <p class="lead fs-3 mb-4 animate__animated animate__fadeInUp animate__delay-1s">Empowering Communities Through Sustainable Development Since 2020</p>
+            <div class="animate__animated animate__fadeInUp animate__delay-2s">
+                <a href="#mission" class="btn btn-primary btn-lg rounded-pill px-5">Our Mission</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Stats -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card text-center p-4 bg-white rounded-3 shadow-sm hover-lift">
+                    <i class="fas fa-users fa-2x text-primary mb-3"></i>
+                    <h3 class="h2 fw-bold mb-2">5,000+</h3>
+                    <p class="text-muted mb-0">Lives Impacted</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card text-center p-4 bg-white rounded-3 shadow-sm hover-lift">
+                    <i class="fas fa-globe-africa fa-2x text-primary mb-3"></i>
+                    <h3 class="h2 fw-bold mb-2">20+</h3>
+                    <p class="text-muted mb-0">Communities Served</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card text-center p-4 bg-white rounded-3 shadow-sm hover-lift">
+                    <i class="fas fa-hand-holding-medical fa-2x text-primary mb-3"></i>
+                    <h3 class="h2 fw-bold mb-2">100+</h3>
+                    <p class="text-muted mb-0">Medical Cases</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card text-center p-4 bg-white rounded-3 shadow-sm hover-lift">
+                    <i class="fas fa-handshake fa-2x text-primary mb-3"></i>
+                    <h3 class="h2 fw-bold mb-2">15+</h3>
+                    <p class="text-muted mb-0">Partner Organizations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mission Section -->
+<section id="mission" class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <img src="{% static 'img/about-hero.jpg' %}" alt="Our Mission" class="img-fluid rounded-3 shadow-lg">
+            </div>
+            <div class="col-lg-6">
+                <h2 class="display-5 fw-bold mb-4">Our Mission</h2>
+                <p class="lead mb-4">At Baris Charity Foundation, we believe in creating positive change through compassionate action and sustainable support.</p>
+                <p class="text-muted mb-4">Our mission is to provide medical assistance and humanitarian aid to those in need, regardless of their background, religion, or nationality. We work tirelessly to create lasting impact in communities across Nigeria.</p>
+                <div class="mission-points">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="icon-box bg-primary-soft rounded-circle me-3">
+                            <i class="fas fa-heartbeat text-primary"></i>
+                        </div>
+                        <span>Support critical medical cases and treatments</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="icon-box bg-primary-soft rounded-circle me-3">
+                            <i class="fas fa-hands-helping text-primary"></i>
+                        </div>
+                        <span>Provide emergency humanitarian assistance</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="icon-box bg-primary-soft rounded-circle me-3">
+                            <i class="fas fa-seedling text-primary"></i>
+                        </div>
+                        <span>Empower communities through sustainable development</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Values Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">Our Core Values</h2>
+            <p class="lead text-muted">The principles that guide our work</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center p-4">
+                        <div class="circle-icon mb-3">
+                            <i class="fas fa-heart fa-2x text-primary"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Compassion</h3>
+                        <p class="text-muted">We lead with empathy and understanding, ensuring every action is guided by genuine care for those we serve.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center p-4">
+                        <div class="circle-icon mb-3">
+                            <i class="fas fa-balance-scale fa-2x text-primary"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Transparency</h3>
+                        <p class="text-muted">We maintain complete transparency in our operations, ensuring accountability in every project and donation.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center p-4">
+                        <div class="circle-icon mb-3">
+                            <i class="fas fa-globe fa-2x text-primary"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Impact</h3>
+                        <p class="text-muted">We focus on creating sustainable, long-term positive change in the lives of those we help.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">Our Leadership Team</h2>
+            <p class="lead text-muted">Meet the dedicated individuals driving positive change at Baris Charity Foundation</p>
+        </div>
+        <div class="row g-4">
+            <!-- Executive Director -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card team-card border-0 shadow-sm text-center hover-lift">
+                    <div class="position-relative">
+                        <img src="{% static 'img/team/mubarak.jpg' %}" alt="Mubarak Maigari" 
+                             class="card-img-top team-img">
+                        <div class="team-overlay">
+                            <div class="social-links">
+                                <a href="https://linkedin.com/in/mubarakmaigari" target="_blank" class="social-link">
+                                    <i class="fab fa-linkedin"></i>
+                                </a>
+                                <a href="https://twitter.com/mubarakmaigari" target="_blank" class="social-link">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="mailto:mubarak@barischarityfoundation.org" class="social-link">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <h3 class="h5 mb-1">Mubarak Maigari</h3>
+                        <p class="text-primary mb-3">Founder & Executive Director</p>
+                        <p class="small text-muted">Leading our mission with over 5 years of experience in humanitarian work and community development.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Programs Director -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card team-card border-0 shadow-sm text-center hover-lift">
+                    <div class="position-relative">
+                        <img src="{% static 'img/team/aisha.jpg' %}" alt="Aisha Mohammed" 
+                             class="card-img-top team-img">
+                        <div class="team-overlay">
+                            <div class="social-links">
+                                <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                                <a href="mailto:aisha@barischarityfoundation.org" class="social-link">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <h3 class="h5 mb-1">Aisha Mohammed</h3>
+                        <p class="text-primary mb-3">Programs Director</p>
+                        <p class="small text-muted">Overseeing our educational and healthcare initiatives with expertise in program management.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Operations Manager -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card team-card border-0 shadow-sm text-center hover-lift">
+                    <div class="position-relative">
+                        <img src="{% static 'img/team/ibrahim.jpg' %}" alt="Ibrahim Hassan" 
+                             class="card-img-top team-img">
+                        <div class="team-overlay">
+                            <div class="social-links">
+                                <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                                <a href="mailto:ibrahim@barischarityfoundation.org" class="social-link">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <h3 class="h5 mb-1">Ibrahim Hassan</h3>
+                        <p class="text-primary mb-3">Operations Manager</p>
+                        <p class="small text-muted">Managing day-to-day operations and ensuring efficient project execution.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community Relations -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card team-card border-0 shadow-sm text-center hover-lift">
+                    <div class="position-relative">
+                        <img src="{% static 'img/team/fatima.jpg' %}" alt="Fatima Usman" 
+                             class="card-img-top team-img">
+                        <div class="team-overlay">
+                            <div class="social-links">
+                                <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                                <a href="mailto:fatima@barischarityfoundation.org" class="social-link">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <h3 class="h5 mb-1">Fatima Usman</h3>
+                        <p class="text-primary mb-3">Community Relations Officer</p>
+                        <p class="small text-muted">Building strong relationships with communities and coordinating outreach programs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advisory Board Section -->
+        <div class="mt-5 pt-4">
+            <div class="text-center mb-5">
+                <h3 class="h2 fw-bold">Advisory Board</h3>
+                <p class="text-muted">Guided by experienced professionals from various sectors</p>
+            </div>
+            <div class="row g-4">
+                <!-- Advisory Board Member 1 -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="card team-card border-0 shadow-sm text-center hover-lift">
+                        <div class="position-relative">
+                            <img src="{% static 'img/team/advisor1.jpg' %}" alt="Dr. Ahmed Sani" 
+                                 class="card-img-top team-img">
+                            <div class="team-overlay">
+                                <div class="social-links">
+                                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-4">
+                            <h3 class="h5 mb-1">Dr. Ahmed Sani</h3>
+                            <p class="text-primary mb-3">Healthcare Advisor</p>
+                            <p class="small text-muted">Leading healthcare professional with 15+ years of experience.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add more advisory board members as needed -->
+            </div>
+        </div>
+
+        <!-- Join Team CTA -->
+        <div class="text-center mt-5">
+            <p class="lead text-muted mb-4">Interested in joining our team?</p>
+            <a href="{% url 'contact' %}" class="btn btn-primary btn-lg rounded-pill px-5">
+                Contact Us <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Join Us Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="display-5 fw-bold mb-4">Join Our Mission</h2>
+        <p class="lead mb-4">Together, we can make a lasting difference in our communities.</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{% url 'cases:list' %}" class="btn btn-light btn-lg rounded-pill px-5">View Cases</a>
+            <a href="#" class="btn btn-outline-light btn-lg rounded-pill px-5">Contact Us</a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="pt-5 pb-3">
+    <div class="container">
+        <div class="row g-4">
+            <!-- About Column -->
+            <div class="col-lg-4">
+                <h5 class="mb-4">About Us</h5>
+                <p class="text-muted">Baris Charity Foundation is dedicated to supporting medical and humanitarian cases worldwide through transparent and effective charitable work.</p>
+                <div class="social-links mt-3">
+                    <a href="#" class="me-3" style="color: #FA6418;"><i class="fab fa-facebook-f fa-lg"></i></a>
+                    <a href="#" class="me-3" style="color: #FA6418;"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="#" class="me-3" style="color: #FA6418;"><i class="fab fa-instagram fa-lg"></i></a>
+                    <a href="#" style="color: #FA6418;"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-4">
+                <h5 class="mb-4">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a href="{% url 'cases:list' %}" class="text-muted text-decoration-none">Cases</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="{% url 'about' %}" class="text-muted text-decoration-none">About Us</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="{% url 'contact' %}" class="text-muted text-decoration-none">Contact</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="text-muted text-decoration-none">Donate</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Support -->
+            <div class="col-lg-2 col-md-4">
+                <h5 class="mb-4">Support</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none">How to Donate</a></li>
+
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="col-lg-4 col-md-4">
+                <h5 class="mb-4">Contact Us</h5>
+                <ul class="list-unstyled text-muted">
+                    <li class="mb-3">
+                        <i class="fas fa-map-marker-alt me-2" style="color: #FA6418;"></i>
+                        8 Ahmad Talib Street, NNDC QTRS, Sharada, Kano, Kano state
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-phone me-2" style="color: #FA6418;"></i>
+                        +234 703 136 0697
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-phone me-2" style="color: #FA6418;"></i>
+                        +234 703 741 1414
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-phone me-2" style="color: #FA6418;"></i>
+                        +234 902 155 1584
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-envelope me-2" style="color: #FA6418;"></i>
+                        info@barischarity.org
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <hr class="mt-4 mb-3 border-secondary">
+
+        <!-- Bottom Footer -->
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="text-muted mb-0">&copy; {% now "Y" %} Baris Charity Foundation. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item">
+                        <a href="#" class="text-muted text-decoration-none">Privacy Policy</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <span class="text-muted mx-2">|</span>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#" class="text-muted text-decoration-none">Terms of Use</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+.hover-lift {
+    transition: transform 0.2s ease-in-out;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+}
+
+.circle-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-primary-soft {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+
+.stat-card {
+    transition: all 0.3s ease;
+}
+
+.team-card .social-links {
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.team-card:hover .social-links {
+    opacity: 1;
+}
+
+.team-img {
+    height: 300px;
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.team-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.team-card:hover .team-overlay {
+    opacity: 1;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    background: var(--bs-primary);
+    color: white;
+    transform: translateY(-3px);
+}
+
+.team-card {
+    overflow: hidden;
+}
+
+.team-card:hover .team-img {
+    transform: scale(1.1);
+}
+
+footer .social-links a:hover {
+    opacity: 0.8;
+    transform: translateY(-3px);
+}
+
+footer .list-unstyled a:hover {
+    color: #FA6418 !important;
+    text-decoration: none;
+}
+
+footer .social-links a {
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+</style>
+{% endblock %}

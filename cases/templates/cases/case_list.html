@@ -1,0 +1,294 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load currency_format %}
+
+{% block title %}Cases - Baris Charity Foundation{% endblock %}
+
+{% block content %}
+<!-- Header Section -->
+<div class="hero-section text-white text-center py-5" 
+     style="background: linear-gradient(rgba(9, 134, 154, 0.85), rgba(23, 197, 206, 0.85)), url('{% static 'img/cases-hero.jpg' %}') no-repeat center center; background-size: cover; min-height: 40vh; display: flex; align-items: center; margin-top: 56px;">
+    <div class="container">
+        <h1 class="display-2 fw-bold mb-4">Our Cases</h1>
+        <p class="lead mb-4 fs-3">Supporting Medical and Humanitarian Cases Worldwide</p>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="d-flex gap-4 justify-content-center">
+                    <div class="stat-item bg-white bg-opacity-10 p-4 rounded-3">
+                        <h4 class="counter-number text-warning fw-bold" data-target="{{ total_cases }}">0</h4>
+                        <p class="mb-0">Total Cases</p>
+                    </div>
+                    <div class="stat-item bg-white bg-opacity-10 p-4 rounded-3">
+                        <h4 class="counter-number text-warning fw-bold" data-target="{{ active_cases }}">0</h4>
+                        <p class="mb-0">Active Cases</p>
+                    </div>
+                    <div class="stat-item bg-white bg-opacity-10 p-4 rounded-3">
+                        <h4 class="counter-number text-warning fw-bold" data-target="{{ completed_cases }}">0</h4>
+                        <p class="mb-0">Completed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Section -->
+<div class="bg-light py-4 border-bottom">
+    <div class="container">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-auto">
+                <h5 class="mb-0 text-primary fw-bold">Filter by:</h5>
+            </div>
+            <div class="col-md">
+                <div class="d-flex gap-2 flex-wrap">
+                    <a href="{% url 'cases:case-list' %}" class="btn {% if not category %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill">
+                        <i class="fas fa-th-large me-2"></i>All Cases
+                    </a>
+                    {% for cat in categories %}
+                    <a href="{% url 'cases:case-list' %}?category={{ cat.slug }}" 
+                       class="btn {% if category == cat.slug %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill">
+                        {{ cat.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cases Grid -->
+<div class="container py-5">
+    <div class="row g-4">
+        {% for case in cases %}
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-hover">
+                {% if case.image %}
+                    <div class="card-img-wrapper">
+                        <img src="{{ case.image.url }}" class="card-img-top" alt="{{ case.title }}" 
+                             style="height: 200px; object-fit: cover;">
+                        {% if case.is_urgent %}
+                            <div class="urgent-badge">
+                                <i class="fas fa-exclamation-circle me-1"></i>Urgent
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge {% if case.is_urgent %}bg-danger{% else %}bg-primary{% endif %} rounded-pill">
+                            {% if case.is_urgent %}Urgent{% else %}{{ case.category }}{% endif %}
+                        </span>
+                        <span class="text-muted">
+                            <i class="fas fa-map-marker-alt me-1"></i>{{ case.country|default:"" }}
+                        </span>
+                    </div>
+                    <h5 class="card-title text-primary">{{ case.title }}</h5>
+                    <p class="card-text text-muted">{{ case.short_description|truncatewords:20 }}</p>
+                    <div class="progress mb-3" style="height: 10px;">
+                        <div class="progress-bar" role="progressbar" 
+                             style="width: {{ case.progress_percentage }}%"
+                             aria-valuenow="{{ case.progress_percentage }}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100"></div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-success fw-semibold">
+                            <i class="fas fa-hand-holding-heart me-1"></i>
+                            {{ case.raised_amount|currency }}
+                        </span>
+                        <span class="text-primary fw-semibold">
+                            <i class="fas fa-flag-checkered me-1"></i>
+                            {{ case.goal_amount|currency }}
+                        </span>
+                    </div>
+                    <div class="d-grid">
+                        <a href="{% url 'cases:case-detail' case.slug %}" 
+                           class="btn btn-accent">
+                            <i class="fas fa-heart me-2"></i>Donate Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <div class="empty-state">
+                <i class="fas fa-folder-open fa-4x text-muted mb-3"></i>
+                <h3 class="text-primary">No Cases Found</h3>
+                <p class="text-muted">There are no cases matching your criteria at the moment.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="d-flex justify-content-center mt-5">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if category %}&category={{ category }}{% endif %}">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+                {% endif %}
+                
+                {% for num in page_obj.paginator.page_range %}
+                <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                    <a class="page-link" href="?page={{ num }}{% if category %}&category={{ category }}{% endif %}">
+                        {{ num }}
+                    </a>
+                </li>
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if category %}&category={{ category }}{% endif %}">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+:root {
+    --brand-primary: #09869A;    /* Teal */
+    --brand-secondary: #17C5CE;  /* Light teal */
+    --brand-accent: #FA6418;     /* Orange */
+    --brand-warning: #EFCC3C;    /* Yellow */
+    --brand-danger: #E32613;     /* Red */
+    --brand-light: #F1F2F2;      /* Light gray */
+}
+
+/* Card Styling */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.shadow-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+.card-img-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.urgent-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--brand-danger);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* Button Styling */
+.btn-primary {
+    background-color: var(--brand-primary);
+    border-color: var(--brand-primary);
+}
+
+.btn-primary:hover {
+    background-color: #076d7d;
+    border-color: #076d7d;
+}
+
+.btn-outline-primary {
+    color: var(--brand-primary);
+    border-color: var(--brand-primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--brand-primary);
+    border-color: var(--brand-primary);
+}
+
+.btn-accent {
+    background-color: var(--brand-accent);
+    border-color: var(--brand-accent);
+    color: white;
+}
+
+.btn-accent:hover {
+    background-color: #e55806;
+    border-color: #e55806;
+    color: white;
+}
+
+/* Progress Bar */
+.progress {
+    background-color: var(--brand-light);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background-color: var(--brand-secondary);
+    border-radius: 10px;
+}
+
+/* Stats Counter */
+.stat-item {
+    transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+}
+
+.counter-number {
+    font-size: 2.5rem;
+    color: var(--brand-warning);
+}
+
+/* Pagination */
+.pagination .page-link {
+    color: var(--brand-primary);
+    border: none;
+    padding: 0.5rem 1rem;
+    margin: 0 3px;
+    border-radius: 5px;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--brand-primary);
+    color: white;
+}
+
+.pagination .page-link:hover {
+    background-color: var(--brand-light);
+    color: var(--brand-primary);
+}
+
+/* Badge Styling */
+.badge {
+    padding: 0.5em 1em;
+    font-weight: 500;
+}
+
+.bg-primary {
+    background-color: var(--brand-primary) !important;
+}
+
+/* Text Colors */
+.text-primary {
+    color: var(--brand-primary) !important;
+}
+
+.text-success {
+    color: var(--brand-secondary) !important;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login - Baris Charity Foundation{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <img src="{% static 'img/logo.png' %}" alt="BCF Logo" height="60" class="mb-3">
+                        <h4 class="text-primary fw-bold">Welcome Back</h4>
+                        <p class="text-muted">Sign in to continue</p>
+                    </div>
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        Invalid username or password.
+                    </div>
+                    {% endif %}
+
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text" style="background-color: #FA6418; color: white;">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <input type="text" name="username" id="id_username" 
+                                       class="form-control" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="id_password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text" style="background-color: #FA6418; color: white;">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                                <input type="password" name="password" id="id_password" 
+                                       class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg" 
+                                    style="background-color: #09869A;">
+                                <i class="fas fa-sign-in-alt me-2"></i> Sign In
+                            </button>
+                        </div>
+
+                        <input type="hidden" name="next" value="{{ next }}">
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <a href="{% url 'password_reset' %}" class="text-decoration-none" 
+                           style="color: #FA6418;">
+                            <i class="fas fa-key me-1"></i> Forgot Password?
+                        </a>
+                        <hr class="my-4">
+                        <p class="mb-0">Don't have an account? 
+                            <a href="{% url 'register' %}" class="text-decoration-none" 
+                               style="color: #09869A;">Register</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

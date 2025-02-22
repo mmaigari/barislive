@@ -1,0 +1,1453 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load currency_format %}
+
+{% block title %}Baris Charity Foundation - Empowering Communities{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<div class="hero-section position-relative">
+    <div class="hero-bg position-absolute w-100 h-100" 
+         style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{% static 'img/hero.jpg' %}') no-repeat center center; background-size: cover;">
+    </div>
+    <div class="container position-relative py-5">
+        <div class="row min-vh-75 align-items-center">
+            <div class="col-lg-7 text-white">
+                <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInUp">
+                    Making a Difference Through Compassionate Action
+                </h1>
+                <p class="lead fs-4 mb-5 animate__animated animate__fadeInUp animate__delay-1s">
+                    Join us in our mission to provide medical assistance and humanitarian aid to those in need.
+                </p>
+                <div class="animate__animated animate__fadeInUp animate__delay-2s">
+                    <a href="{% url 'sponsorships:sponsorship-list' %}" class="btn btn-primary btn-lg rounded-pill me-3 px-4">
+                        Sponsorship
+                    </a>
+                    <a href="{% url 'campaigns:campaign-list' %}" class="btn btn-outline-light btn-lg rounded-pill px-4">
+                        Campaign
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="row g-3 mt-4 mt-lg-0">
+                    <div class="col-6">
+                        <div class="stat-card bg-white bg-opacity-10 p-4 rounded-3 text-white text-center backdrop-blur">
+                            <h3 class="display-4 fw-bold mb-2">
+                                <span class="counter">{{ total_cases|default:"0" }}</span>
+                            </h3>
+                            <p class="mb-0">Cases</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-card bg-white bg-opacity-10 p-4 rounded-3 text-white text-center backdrop-blur">
+                            <h3 class="display-4 fw-bold mb-2">
+                                <span class="counter">{{ total_campaigns|default:"0" }}</span>
+                            </h3>
+                            <p class="mb-0">Campaigns</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-card bg-white bg-opacity-10 p-4 rounded-3 text-white text-center backdrop-blur">
+                            <h3 class="display-4 fw-bold mb-2">
+                                <span class="counter">{{ total_donors|default:"0" }}</span>
+                            </h3>
+                            <p class="mb-0">Donors</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-card bg-white bg-opacity-10 p-4 rounded-3 text-white text-center backdrop-blur">
+                            <h3 class="display-4 fw-bold mb-2">
+                                <span class="counter">{{ total_countries|default:"0" }}</span>
+                            </h3>
+                            <p class="mb-0">Countries</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Urgent Cases Section -->
+{% if urgent_cases %}
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h2 class="section-title">Urgent Cases</h2>
+                <p class="text-muted">These cases need immediate attention</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            {% for case in urgent_cases %}
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-card">
+                    {% if case.image %}
+                        <img src="{{ case.image.url }}" class="card-img-top" alt="{{ case.title }}" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-danger">Urgent</span>
+                            <small class="text-muted">{{ case.country|default:"" }}</small>
+                        </div>
+                        <h5 class="card-title">{{ case.title }}</h5>
+                        <p class="card-text text-muted">{{ case.short_description|truncatewords:20 }}</p>
+                        <div class="progress mb-3" style="height: 10px;">
+                            <div class="progress-bar bg-success" role="progressbar" 
+                                 style="width: {{ case.progress_percentage }}%"
+                                 aria-valuenow="{{ case.progress_percentage }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100"></div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-muted">Raised: {{ case.raised_amount|currency }}</span>
+                            <span class="text-muted">Goal: {{ case.goal_amount|currency }}</span>
+                        </div>
+                        <div class="d-grid">
+                            <a href="{% url 'cases:case-detail' case.slug %}" 
+                               class="btn btn-primary">Donate Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+<!-- Two Column Section -->
+<section class="about-section position-relative py-5 overflow-hidden">
+    <!-- SVG Pattern Background -->
+    <div class="pattern-background position-absolute w-100 h-100">
+        <svg width="100" height="100" viewBox="0 0 100 100" class="pattern-svg">
+            <use href="{% static 'img/pattern.svg' %}#pattern"></use>
+        </svg>
+    </div>
+
+    <div class="container position-relative">
+        <div class="row align-items-center g-5">
+            <!-- Left Column -->
+            <div class="col-lg-6">
+                <div class="about-content">
+                   
+                    <!-- Video Play Button -->
+                    <div class="video-trigger mb-4">
+                        <button class="play-button" data-bs-toggle="modal" data-bs-target="#videoModal">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Headline -->
+                    <h2 class="display-4 fw-bold text-primary mb-4">
+                        Baris Charity Foundation
+                    </h2>
+                    
+                    <!-- Description -->
+                    <p class="lead text-muted mb-4">
+                        Baris Charity Foundation is a registered non-profit organization operating across multiple countries, 
+                        dedicated to providing medical assistance and humanitarian support to those in need. With a strong 
+                        presence in Nigeria, UAE, and the UK, we work tirelessly to create positive change and empower 
+                        communities through sustainable development initiatives.
+                    </p>
+                    
+                    <!-- CTA Button -->
+                    <a href="{% url 'about' %}" class="btn btn-accent btn-lg rounded-pill">
+                        Learn More About Us <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Right Column -->
+            <div class="col-lg-6">
+                <div class="stacked-images position-relative">
+                    <div class="image-top">
+                        <img src="{% static 'img/about-1.jpg' %}" 
+                             alt="BCF Impact" 
+                             class="img-fluid rounded-3 shadow-lg">
+                    </div>
+                    <div class="image-bottom">
+                        <img src="{% static 'img/about-2.jpg' %}" 
+                             alt="BCF Community" 
+                             class="img-fluid rounded-3 shadow-lg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Video Modal -->
+<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="ratio ratio-16x9">
+                    <!-- Updated YouTube embed with proper URL structure -->
+                    <iframe id="videoIframe"
+                            src=""
+                            title="YouTube video"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Campaign Carousel Section -->
+<section class="campaign-carousel py-5">
+    <div class="container">
+        <!-- Header with Navigation -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title mb-0">Campaigns</h2>
+            <div class="carousel-controls">
+                <button class="btn btn-outline-primary rounded-circle me-2" id="prevBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="btn btn-outline-primary rounded-circle" id="nextBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Carousel Container -->
+        <div class="campaign-slider position-relative">
+            <div class="campaign-track d-flex gap-4">
+                {% for campaign in all_campaigns %}
+                <div class="campaign-card">
+                    <div class="card border-0 shadow-sm h-100">
+                        {% if campaign.image %}
+                        <div class="card-img-wrapper">
+                            <img src="{{ campaign.image.url }}" 
+                                 class="card-img-top" 
+                                 alt="{{ campaign.title }}">
+                        </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title text-truncate">{{ campaign.title }}</h5>
+                            <p class="card-text text-muted mb-3">{{ campaign.description|truncatechars:60 }}</p>
+                            
+                            <div class="donation-progress">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-primary fw-bold">
+                                        Raised ₦{{ campaign.raised_amount|floatformat:0 }}
+                                    </span>
+                                    <span class="text-dark fw-bold">
+                                        Goal ₦{{ campaign.goal_amount|floatformat:0 }}
+                                    </span>
+                                </div>
+                                <div class="progress" style="height: 5px;">
+                                    <div class="progress-bar" 
+                                         role="progressbar" 
+                                         style="width: {% widthratio campaign.raised_amount campaign.goal_amount 100 %}%">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pt-0">
+                            <a href="{% url 'campaigns:campaign-detail' campaign.slug %}" 
+                               class="btn btn-outline-primary w-100">
+                                Support Campaign
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Featured Sponsorships Section -->
+<section class="sponsorship-carousel py-5">
+    <div class="container">
+        <!-- Header with Navigation -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title mb-0">Sponsorship Programs</h2>
+            <div class="carousel-controls">
+                <button class="btn btn-outline-primary rounded-circle me-2" id="prevSponsorBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="btn btn-outline-primary rounded-circle" id="nextSponsorBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Carousel Container -->
+        <div class="sponsorship-slider position-relative">
+            <div class="sponsorship-track d-flex gap-4">
+                {% for sponsorship in featured_sponsorships %}
+                <div class="sponsorship-card">
+                    <div class="card border-0 shadow-sm h-100">
+                        {% if sponsorship.image %}
+                        <div class="card-img-wrapper">
+                            <img src="{{ sponsorship.image.url }}" 
+                                 class="card-img-top" 
+                                 alt="{{ sponsorship.title }}">
+                        </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <span class="badge mb-2" style="background-color: #FA6418;">
+                                {{ sponsorship.category.name }}
+                            </span>
+                            <h5 class="card-title text-truncate">{{ sponsorship.title }}</h5>
+                            <p class="card-text text-muted mb-3">{{ sponsorship.description|truncatechars:60 }}</p>
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="text-primary fw-bold">₦{{ sponsorship.monthly_amount }}/month</span>
+                                <a href="{{ sponsorship.get_absolute_url }}" 
+                                   class="btn btn-outline-primary">
+                                    <i class="fas fa-heart" style="color: #FA6418;"></i> Sponsor Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<div class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">How It Works</h2>
+            <p class="lead text-muted">Making a difference is easy with BCF</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center p-4">
+                    <div class="circle-icon mb-3" 
+                         style="background-color: var(--brand-light); border: 2px solid var(--brand-primary-light);">
+                        <i class="fas fa-search fa-2x" style="color: var(--brand-primary);"></i>
+                    </div>
+                    <h3>1. Browse Cases</h3>
+                    <p class="text-muted">Explore verified cases that need your support</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center p-4">
+                    <div class="circle-icon mb-3">
+                        <i class="fas fa-hand-holding-heart fa-2x text-primary"></i>
+                    </div>
+                    <h3>2. Choose & Donate</h3>
+                    <p class="text-muted">Select a case and make your contribution</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center p-4">
+                    <div class="circle-icon mb-3">
+                        <i class="fas fa-chart-line fa-2x text-primary"></i>
+                    </div>
+                    <h3>3. Track Impact</h3>
+                    <p class="text-muted">Follow the progress and see your impact</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Focus Areas Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <!-- Section Header -->
+        <div class="text-center mb-5">
+            <h2 class="display-4 fw-bold mb-3">Our Focus Areas</h2>
+            <p class="lead text-muted mb-0">Making a difference through targeted support and sustainable solutions</p>
+        </div>
+
+        <!-- Focus Areas Grid -->
+        <div class="row g-4">
+            <!-- Education Support -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body p-4">
+                        <div class="icon-box mb-3">
+                            <i class="fas fa-graduation-cap fa-2x text-primary"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Education Support</h3>
+                        <p class="text-muted mb-0">Providing educational opportunities through scholarships, school supplies, and learning resources to empower future generations.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Healthcare Access -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body p-4">
+                        <div class="icon-box mb-3">
+                            <i class="fas fa-heartbeat fa-2x text-danger"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Healthcare Access</h3>
+                        <p class="text-muted mb-0">Ensuring access to quality medical care, medications, and health services for those in need of critical treatment.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community Development -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body p-4">
+                        <div class="icon-box mb-3">
+                            <i class="fas fa-hands-helping fa-2x text-success"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Community Development</h3>
+                        <p class="text-muted mb-0">Building stronger communities through infrastructure projects, skill development, and sustainable initiatives.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emergency Relief -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body p-4">
+                        <div class="icon-box mb-3">
+                            <i class="fas fa-hand-holding-heart fa-2x text-warning"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Emergency Relief</h3>
+                        <p class="text-muted mb-0">Providing rapid response and support during crises, natural disasters, and emergency situations.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Food Security -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body p-4">
+                        <div class="icon-box mb-3">
+                            <i class="fas fa-utensils fa-2x text-info"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Food Security</h3>
+                        <p class="text-muted mb-0">Combating hunger through food distribution programs and sustainable agriculture initiatives.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Economic Empowerment -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body p-4">
+                        <div class="icon-box mb-3">
+                            <i class="fas fa-seedling fa-2x text-success"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Economic Empowerment</h3>
+                        <p class="text-muted mb-0">Supporting small businesses and entrepreneurs through microfinance and skill development programs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="text-center mt-5">
+            <a href="{% url 'cases:case-list' %}" class="btn btn-primary btn-lg rounded-pill px-5 hover-lift">
+                Explore Our Cases <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+
+<!-- Partners Section -->
+<section class="partners-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-6 fw-bold">Our Partners</h2>
+            <p class="lead text-muted">Working together to make a difference</p>
+        </div>
+        
+        <div class="partners-container bg-white rounded-4 shadow-sm p-4">
+            <div class="row justify-content-center align-items-center g-4">
+
+                
+                <!-- Partner Logo 2 -->
+                <div class="col-6 col-md-3">
+                    <div class="partner-logo-wrapper text-center">
+                        <img src="{% static 'img/partners/Insanizi.png' %}" 
+                             alt="Partner 2" 
+                             class="partner-logo img-fluid">
+                    </div>
+                </div>
+                
+                <!-- Partner Logo 3 -->
+                <div class="col-6 col-md-3">
+                    <div class="partner-logo-wrapper text-center">
+                        <img src="{% static 'img/partners/sekka.png' %}" 
+                             alt="Partner 3" 
+                             class="partner-logo img-fluid">
+                    </div>
+                </div>
+                
+                <!-- Partner Logo 4 -->
+                <div class="col-6 col-md-3">
+                    <div class="partner-logo-wrapper text-center">
+                        <img src="{% static 'img/partners/Yardimeli.png' %}" 
+                             alt="Partner 4" 
+                             class="partner-logo img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Statistics Section -->
+<section class="statistics-section py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">Our Impact</h2>
+            <p class="lead text-muted">Making a difference together</p>
+        </div>
+        <div class="row g-4">
+            <!-- Medical Cases Card -->
+            <div class="col-md-4">
+                <div class="stat-card position-relative overflow-hidden rounded-4 shadow-lg">
+                    <img src="{% static 'img/medical-bg.jpg' %}" class="card-bg" alt="Medical Cases">
+                    <div class="card-overlay" style="background: linear-gradient(45deg, rgba(227, 38, 19, 0.95) 80%, rgba(250, 100, 24, 0.95))"></div>
+                    <div class="card-content p-4">
+                        <div class="icon-circle mb-3">
+                            <i class="fas fa-heartbeat stat-icon"></i>
+                        </div>
+                        <h6 class="stat-title mb-2">Medical Cases</h6>
+                        <div class="stat-value display-5">{{ total_cases }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Raised Card -->
+            <div class="col-md-4">
+                <div class="stat-card position-relative overflow-hidden rounded-4 shadow-lg">
+                    <img src="{% static 'img/donations-bg.jpg' %}" class="card-bg" alt="Total Raised">
+                    <div class="card-overlay" style="background: linear-gradient(45deg, rgba(250, 100, 24, 0.95) 80%, rgba(227, 38, 19, 0.95))"></div>
+                    <div class="card-content p-4">
+                        <div class="icon-circle mb-3">
+                            <i class="fas fa-hand-holding-heart stat-icon"></i>
+                        </div>
+                        <h6 class="stat-title mb-2">Total Raised</h6>
+                        <div class="stat-value display-5">₦{{ total_raised|floatformat:0 }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donors Card -->
+            <div class="col-md-4">
+                <div class="stat-card position-relative overflow-hidden rounded-4 shadow-lg">
+                    <img src="{% static 'img/donors-bg.jpg' %}" class="card-bg" alt="Total Donors">
+                    <div class="card-overlay" style="background: linear-gradient(45deg, rgba(227, 38, 19, 0.95) 80%, rgba(250, 100, 24, 0.95))"></div>
+                    <div class="card-content p-4">
+                        <div class="icon-circle mb-3">
+                            <i class="fas fa-users stat-icon"></i>
+                        </div>
+                        <h6 class="stat-title mb-2">Total Donors</h6>
+                        <div class="stat-value display-5">{{ total_donors }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Countries Card -->
+            <div class="col-md-4">
+                <div class="stat-card position-relative overflow-hidden rounded-4 shadow-lg">
+                    <img src="{% static 'img/countries-bg.jpg' %}" class="card-bg" alt="Countries Reached">
+                    <div class="card-overlay" style="background: linear-gradient(45deg, rgba(250, 100, 24, 0.95) 80%, rgba(227, 38, 19, 0.95))"></div>
+                    <div class="card-content p-4">
+                        <div class="icon-circle mb-3">
+                            <i class="fas fa-globe-africa stat-icon"></i>
+                        </div>
+                        <h6 class="stat-title mb-2">Countries Reached</h6>
+                        <div class="stat-value display-5">{{ countries_reached }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campaigns Card -->
+            <div class="col-md-4">
+                <div class="stat-card position-relative overflow-hidden rounded-4 shadow-lg">
+                    <img src="{% static 'img/campaigns-bg.jpg' %}" class="card-bg" alt="Active Campaigns">
+                    <div class="card-overlay" style="background: linear-gradient(45deg, rgba(227, 38, 19, 0.95) 80%, rgba(250, 100, 24, 0.95))"></div>
+                    <div class="card-content p-4">
+                        <div class="icon-circle mb-3">
+                            <i class="fas fa-bullhorn stat-icon"></i>
+                        </div>
+                        <h6 class="stat-title mb-2">Active Campaigns</h6>
+                        <div class="stat-value display-5">{{ campaigns }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sponsorships Card -->
+            <div class="col-md-4">
+                <div class="stat-card position-relative overflow-hidden rounded-4 shadow-lg">
+                    <img src="{% static 'img/sponsorships-bg.jpg' %}" class="card-bg" alt="Sponsorship Programs">
+                    <div class="card-overlay" style="background: linear-gradient(45deg, rgba(250, 100, 24, 0.95) 80%, rgba(227, 38, 19, 0.95))"></div>
+                    <div class="card-content p-4">
+                        <div class="icon-circle mb-3">
+                            <i class="fas fa-hands-helping stat-icon"></i>
+                        </div>
+                        <h6 class="stat-title mb-2">Sponsorship Programs</h6>
+                        <div class="stat-value display-5">{{ sponsorships }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact & Newsletter Section -->
+<section class="contact-newsletter-section py-5">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Contact Card -->
+            <div class="col-lg-6">
+                <div class="contact-card bg-gradient-primary text-white p-5 rounded-4 shadow-lg h-100">
+                    <div class="icon-circle icon-circle-lg mb-4">
+                        <i class="fas fa-phone-alt contact-icon"></i>
+                    </div>
+                    <h3 class="card-title h2 mb-4">Need Help?</h3>
+                    <p class="card-text lead mb-5">Have questions about donations or want to get involved? Our team is here to help you make a difference.</p>
+                    <a href="{% url 'contact' %}" class="btn btn-light btn-lg rounded-pill px-5 hover-lift">
+                        Contact Us <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Newsletter Card -->
+            <div class="col-lg-6">
+                <div class="newsletter-card bg-gradient-secondary text-white p-5 rounded-4 shadow-lg h-100">
+                    <div class="icon-circle icon-circle-lg mb-4">
+                        <i class="fas fa-envelope contact-icon"></i>
+                    </div>
+                    <h3 class="card-title h2 mb-4">Stay Connected</h3>
+                    <p class="card-text lead mb-5">Join our newsletter to receive updates about our campaigns and the impact we're making together.</p>
+                    <form class="newsletter-form" id="newsletterForm">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            <input type="email" 
+                                   class="form-control form-control-lg rounded-pill-start" 
+                                   placeholder="Your email address" 
+                                   required>
+                            <button class="btn btn-light btn-lg rounded-pill-end px-4 hover-lift" 
+                                    type="submit">
+                                Subscribe <i class="fas fa-paper-plane ms-2"></i>
+                            </button>
+                        </div>
+                        <div class="form-message mt-2" style="display: none;"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Reset any potential conflicting styles */
+.stat-card {
+    height: 240px;
+    transition: all 0.3s ease;
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: none; /* Reset any background */
+}
+
+.stat-card:hover {
+    transform: translateY(-10px);
+}
+
+/* Ensure overlay is visible */
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    opacity: 1 !important; /* Force overlay visibility */
+}
+
+/* Background image styling */
+.card-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.2;
+    top: 0;
+    left: 0;
+}
+
+/* Content positioning */
+.card-content {
+    position: relative;
+    z-index: 2; /* Ensure content is above overlay */
+    height: 100%;
+    color: white !important; /* Force white text */
+}
+
+/* Icon styling */
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255,255,255,0.5);
+}
+
+.stat-icon {
+    font-size: 24px;
+    color: white !important; /* Force white icon */
+}
+
+/* Text styling */
+.stat-title {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: white !important; /* Force white text */
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white !important; /* Force white text */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Contact & Newsletter Section */
+.contact-card,
+.newsletter-card {
+    background: linear-gradient(45deg, #E32613 80%, #FA6418) !important; /* Force gradient */
+    border: none !important;
+    transition: transform 0.3s ease;
+}
+
+.newsletter-card {
+    background: linear-gradient(45deg, #FA6418 80%, #E32613) !important; /* Force gradient */
+}
+
+.contact-card:hover,
+.newsletter-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .stat-card {
+        height: 200px;
+    }
+    
+    .stat-value {
+        font-size: 2rem;
+    }
+    
+    .icon-circle {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* About Section Styling */
+.about-section {
+    background-color: var(--brand-danger); /* Red #E32613 */
+    color: #e32613;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Pattern Background */
+.pattern-background {
+    opacity: 0.08;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("{% static 'img/pattern.svg' %}");
+    background-repeat: repeat;
+    background-size: 100px 100px;
+}
+
+.pattern-svg {
+    fill: #FA6418;
+    width: 100px;
+    height: 100px;
+}
+
+/* Text colors adjusted for red bg */
+.about-content h2 {
+    color: #e32613 !important;
+}
+
+.about-content p {
+    color: #e32613 !important;
+}
+
+/* Logo */
+.logo {
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+/* Play Button - adjusted for red bg */
+.play-button {
+    background-color: white;
+    border: none;
+    color: var(--brand-danger);
+    font-size: 24px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.play-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    background-color: var(--brand-warning);
+}
+
+/* Stacked Images */
+.stacked-images {
+    padding: 2rem;
+}
+
+.image-top {
+    position: relative;
+    z-index: 2;
+    transform: translateX(-30px) translateY(30px);
+}
+
+.image-bottom {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80%;
+    z-index: 1;
+}
+
+.image-top img,
+.image-bottom img {
+    transition: transform 0.3s ease;
+}
+
+.stacked-images:hover .image-top img {
+    transform: translateX(10px) translateY(-10px);
+}
+
+.stacked-images:hover .image-bottom img {
+    transform: translateX(-10px) translateY(10px);
+}
+
+/* Video Modal */
+.modal-content {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.btn-close {
+    background-color: white;
+    opacity: 1;
+    z-index: 10;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991.98px) {
+    .stacked-images {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
+    .image-top {
+        transform: translateX(-15px) translateY(15px);
+    }
+    
+    .image-bottom {
+        width: 85%;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .play-button {
+        width: 60px;
+        height: 60px;
+        font-size: 20px;
+    }
+    
+    .image-top {
+        transform: translateX(-10px) translateY(10px);
+    }
+}
+
+/* CTA Button - adjusted for red bg */
+.btn-accent {
+    background-color: white;
+    border-color: white;
+    color: var(--brand-danger);
+    font-weight: 600;
+}
+
+.btn-accent:hover {
+    background-color: var(--brand-warning);
+    border-color: var(--brand-warning);
+    color: var(--brand-danger);
+    transform: translateY(-2px);
+}
+
+/* Carousel Navigation Styling */
+.carousel-controls .btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--brand-primary);
+    transition: all 0.3s ease;
+}
+
+.carousel-controls .btn:hover {
+    background-color: var(--brand-primary);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.carousel-controls .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Carousel Container */
+.campaign-slider {
+    overflow: hidden;
+    position: relative;
+}
+
+.campaign-track {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.campaign-card {
+    flex: 0 0 300px;
+    max-width: 300px;
+    margin-right: 1rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .campaign-card {
+        flex: 0 0 260px;
+        max-width: 260px;
+    }
+    
+    .carousel-controls .btn {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/* Shared carousel styles */
+.sponsorship-slider,
+.campaign-slider {
+    overflow: hidden;
+    position: relative;
+}
+
+.sponsorship-track,
+.campaign-track {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.sponsorship-card,
+.campaign-card {
+    flex: 0 0 300px;
+    max-width: 300px;
+    margin-right: 1rem;
+}
+
+.card-img-wrapper {
+    height: 200px;
+    overflow: hidden;
+}
+
+.card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.card:hover .card-img-wrapper img {
+    transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sponsorship-card,
+    .campaign-card {
+        flex: 0 0 260px;
+        max-width: 260px;
+    }
+}
+
+/* Updated Statistics Section Styling */
+.statistics-section {
+    background: linear-gradient(to bottom, #f8f9fa, #fff);
+}
+
+.stat-card {
+    height: 240px;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-10px);
+}
+
+.card-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.2; /* Reduced opacity to make overlays more visible */
+}
+
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    border: 2px solid rgba(255,255,255,0.5);
+}
+
+.stat-icon {
+    font-size: 24px;
+    color: #fff;
+}
+
+.stat-title {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.9);
+    font-weight: 500;
+}
+
+.stat-value {
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Contact & Newsletter cards updated with brand colors */
+.contact-card {
+    background: linear-gradient(45deg, #E32613 80%, #FA6418);
+}
+
+.newsletter-card {
+    background: linear-gradient(45deg, #FA6418 80%, #E32613);
+}
+
+/* Partners Section Styling */
+.partners-section {
+    background-color: #f8f9fa;
+}
+
+.partners-container {
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.partner-logo-wrapper {
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border-radius: 1rem;
+}
+
+.partner-logo {
+    max-height: 80px;
+    width: auto;
+    opacity: 0.6; /* Added opacity */
+    transition: all 0.3s ease;
+    filter: grayscale(100%); /* Optional: adds grayscale effect */
+}
+
+.partner-logo-wrapper:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.partner-logo-wrapper:hover .partner-logo {
+    opacity: 1; /* Full opacity on hover */
+    filter: grayscale(0%); /* Optional: removes grayscale on hover */
+    transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .partner-logo-wrapper {
+        height: 100px;
+        padding: 1rem;
+    }
+    
+    .partner-logo {
+        max-height: 60px;
+    }
+}
+
+/* Newsletter Form Styling */
+.form-message {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.text-success {
+    color: #198754 !important;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.btn-success {
+    background-color: #198754;
+    border-color: #198754;
+    color: white;
+}
+
+/* Add these styles to your CSS */
+.hover-lift {
+    transition: transform 0.2s ease-in-out;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+}
+
+.icon-box {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+.backdrop-blur {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.min-vh-75 {
+    min-height: 75vh;
+}
+
+.counter {
+    font-family: var(--bs-font-sans-serif);
+}
+</style>
+
+<script>
+// Video Modal Handler
+document.getElementById('videoModal').addEventListener('show.bs.modal', function (event) {
+    // Convert YouTube URL to embed format
+    const videoId = 'UNDrrHCeRvY'; // Your video ID
+    const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    this.querySelector('iframe').src = embedUrl;
+});
+
+document.getElementById('videoModal').addEventListener('hide.bs.modal', function (event) {
+    // Reset video when modal closes
+    this.querySelector('iframe').src = '';
+});
+
+// Pattern Background
+function createPattern() {
+    const pattern = document.querySelector('.pattern-background');
+    // Add your SVG pattern repetition logic here
+}
+
+// Initialize pattern on load
+window.addEventListener('load', createPattern);
+
+// Initialize both carousels
+document.addEventListener('DOMContentLoaded', function() {
+    // Campaign carousel initialization (existing code)
+    initializeCarousel('.campaign-track', '.campaign-card', '#prevBtn', '#nextBtn');
+    
+    // Sponsorship carousel initialization
+    initializeCarousel('.sponsorship-track', '.sponsorship-card', '#prevSponsorBtn', '#nextSponsorBtn');
+    
+    // Carousel initialization function
+    function initializeCarousel(trackSelector, cardSelector, prevBtnSelector, nextBtnSelector) {
+        const track = document.querySelector(trackSelector);
+        const cards = document.querySelectorAll(cardSelector);
+        const prevBtn = document.querySelector(prevBtnSelector);
+        const nextBtn = document.querySelector(nextBtnSelector);
+        
+        if (!track || !cards.length || !prevBtn || !nextBtn) return;
+        
+        let currentIndex = 0;
+        const cardWidth = 300 + 16; // card width + gap
+        const visibleCards = Math.floor(track.parentElement.offsetWidth / cardWidth);
+        const maxIndex = Math.max(0, cards.length - visibleCards);
+        
+        function updateButtons() {
+            prevBtn.disabled = currentIndex <= 0;
+            nextBtn.disabled = currentIndex >= maxIndex;
+        }
+        
+        function slide(direction) {
+            currentIndex = Math.max(0, Math.min(currentIndex + direction, maxIndex));
+            track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+            updateButtons();
+        }
+        
+        prevBtn.addEventListener('click', () => slide(-1));
+        nextBtn.addEventListener('click', () => slide(1));
+        
+        // Initial button state
+        updateButtons();
+        
+        // Update on resize
+        window.addEventListener('resize', () => {
+            const newVisibleCards = Math.floor(track.parentElement.offsetWidth / cardWidth);
+            const newMaxIndex = Math.max(0, cards.length - newVisibleCards);
+            currentIndex = Math.min(currentIndex, newMaxIndex);
+            track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+            updateButtons();
+        });
+    }
+});
+
+// Newsletter Form Handler
+document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const form = this;
+    const email = form.querySelector('input[type="email"]').value;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const messageDiv = form.querySelector('.form-message');
+    
+    // Disable form during submission
+    submitBtn.disabled = true;
+    const originalBtnText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subscribing...';
+    
+    // Send AJAX request
+    fetch('{% url "newsletter:subscribe" %}', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `email=${encodeURIComponent(email)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Show message
+        messageDiv.style.display = 'block';
+        messageDiv.className = `form-message mt-2 text-${data.status === 'success' ? 'success' : 'danger'}`;
+        messageDiv.innerHTML = data.message;
+        
+        // Reset form on success
+        if (data.status === 'success') {
+            form.reset();
+            submitBtn.innerHTML = '<i class="fas fa-check"></i> Subscribed!';
+            submitBtn.classList.remove('btn-light');
+            submitBtn.classList.add('btn-success');
+            
+            // Reset button after 3 seconds
+            setTimeout(() => {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.classList.remove('btn-success');
+                submitBtn.classList.add('btn-light');
+                submitBtn.disabled = false;
+                messageDiv.style.display = 'none';
+            }, 3000);
+        } else {
+            // Reset button on error
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+        }
+    })
+    .catch(error => {
+        // Handle error
+        messageDiv.style.display = 'block';
+        messageDiv.className = 'form-message mt-2 text-danger';
+        messageDiv.innerHTML = 'An error occurred. Please try again later.';
+        
+        // Reset button
+        submitBtn.innerHTML = originalBtnText;
+        submitBtn.disabled = false;
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize counters
+    const counters = document.querySelectorAll('.counter');
+    counters.forEach(counter => {
+        const target = parseInt(counter.textContent);
+        let count = 0;
+        const speed = 2000 / target; // Adjust speed based on target value
+
+        function updateCount() {
+            if (count < target) {
+                count++;
+                counter.innerText = count;
+                setTimeout(updateCount, speed);
+            } else {
+                counter.innerText = target;
+            }
+        }
+
+        updateCount();
+    });
+});
+</script>
+
+<!-- Footer -->
+<footer class=" pt-5 pb-3">
+    <div class="container">
+        <div class="row g-4">
+            <!-- About Column -->
+            <div class="col-lg-4">
+                <h5 class="mb-4">About Us</h5>
+                <p class="text-muted">Baris Charity Foundation is dedicated to supporting medical and humanitarian cases worldwide through transparent and effective charitable work.</p>
+                <div class="social-links mt-3">
+                    <a href="#" class="me-3" style="color: #FA6418;"><i class="fab fa-facebook-f fa-lg"></i></a>
+                    <a href="#" class="me-3" style="color: #FA6418;"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="#" class="me-3" style="color: #FA6418;"><i class="fab fa-instagram fa-lg"></i></a>
+                    <a href="#" style="color: #FA6418;"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-4">
+                <h5 class="mb-4">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a href="{% url 'cases:case-list' %}" class="text-muted text-decoration-none">Cases</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="{% url 'about' %}" class="text-muted text-decoration-none">About Us</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="{% url 'contact' %}" class="text-muted text-decoration-none">Contact</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="text-muted text-decoration-none">Donate</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Support -->
+            <div class="col-lg-2 col-md-4">
+                <h5 class="mb-4">Support</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none">How to Donate</a></li>
+     
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="col-lg-4 col-md-4">
+                <h5 class="mb-4">Contact Us</h5>
+                <ul class="list-unstyled text-muted">
+                    <li class="mb-3">
+                        <i class="fas fa-map-marker-alt me-2" style="color: #FA6418;"></i>
+                        8 Ahmad Talib Street, NNDC QTRS, Sharada, Kano, Kano state
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-phone me-2" style="color: #FA6418;"></i>
+                        +234 703 136 0697
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-phone me-2" style="color: #FA6418;"></i>
+                        +234 703 741 1414
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-phone me-2" style="color: #FA6418;"></i>
+                        +234 902 155 1584
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-envelope me-2" style="color: #FA6418;"></i>
+                        info@barischarity.org
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <hr class="mt-4 mb-3 border-secondary">
+
+        <!-- Bottom Footer -->
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="text-muted mb-0">&copy; {% now "Y" %} Baris Charity Foundation. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item">
+                        <a href="#" class="text-muted text-decoration-none">Privacy Policy</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <span class="text-muted mx-2">|</span>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#" class="text-muted text-decoration-none">Terms of Use</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+{% endblock %}

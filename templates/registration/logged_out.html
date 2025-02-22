@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Logged Out - BCF{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4 text-center">
+                    <div class="mb-4">
+                        <i class="fas fa-check-circle fa-3x" style="color: #09869A;"></i>
+                    </div>
+                    <h4 class="mb-3" style="color: #09869A;">Successfully Logged Out</h4>
+                    <p class="text-muted mb-4">Thank you for using BCF. See you again soon!</p>
+                    <div class="d-grid">
+                        <a href="{% url 'login' %}" class="btn btn-primary btn-lg" 
+                           style="background-color: #FA6418; border-color: #FA6418;">
+                            <i class="fas fa-sign-in-alt me-2"></i> Sign In Again
+                        </a>
+                    </div>
+                    <div class="mt-4">
+                        <a href="{% url 'home' %}" class="text-decoration-none" 
+                           style="color: #09869A;">
+                            <i class="fas fa-home me-1"></i> Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

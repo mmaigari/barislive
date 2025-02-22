@@ -1,0 +1,8 @@
+ERROR 2025-02-18 03:40:54,679 utils Flutterwave API error: 400 Client Error: Bad Request for url: https://api.flutterwave.com/v3/payments
+ERROR 2025-02-18 03:40:54,680 views Payment initialization error: Payment service error: 400 Client Error: Bad Request for url: https://api.flutterwave.com/v3/payments
+ERROR 2025-02-18 03:54:51,058 utils Flutterwave error: 400 - {"status":"error","errors":[{"field":"customer.email","message":"Customer email is not allowed to be empty"}],"message":"One or more required parameters missing"}
+ERROR 2025-02-18 03:54:51,060 utils Unexpected error in payment initialization: Payment initialization failed: HTTP 400
+ERROR 2025-02-18 03:54:51,061 views Payment initialization error: Payment initialization failed
+ERROR 2025-02-18 03:59:52,464 views Donation error: 'tx_ref'
+ERROR 2025-02-18 04:00:38,250 views Donation error: 'tx_ref'
+ERROR 2025-02-18 04:11:20,675 views Payment verification error: name 'verify_flutterwave_payment' is not defined

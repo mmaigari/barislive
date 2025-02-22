@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Sponsorship Details -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                {% if sponsorship.image %}
+                <img src="{{ sponsorship.image.url }}" class="card-img-top" alt="{{ sponsorship.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <span class="badge bg-primary mb-2">{{ sponsorship.category.name }}</span>
+                    <h2 class="card-title">{{ sponsorship.title }}</h2>
+                    <p class="card-text">{{ sponsorship.description }}</p>
+                    
+                    <hr>
+                    
+                    <h5>Beneficiary Details</h5>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p><strong>Name:</strong> {{ sponsorship.beneficiary_name }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Age:</strong> {{ sponsorship.beneficiary_age }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        {% if user.is_authenticated %}
+                        <button class="btn btn-primary btn-lg" onclick="showSponsorshipModal()">
+                            Become a Sponsor
+                        </button>
+                        {% else %}
+                        <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary btn-lg">
+                            Login to Sponsor
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Sponsorship Summary -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Sponsorship Details</h5>
+                    <p class="display-6 text-primary mb-3">₦{{ sponsorship.monthly_amount }}<small class="text-muted">/month</small></p>
+                    <p class="text-muted mb-0">Total Sponsors: {{ sponsorship.total_sponsors }}</p>
+                </div>
+            </div>
+            
+            <!-- Recent Sponsors -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Recent Sponsors</h5>
+                    {% for payment in recent_sponsors %}
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-user-circle fa-2x text-muted"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="mb-0">
+                                {% if payment.is_anonymous %}
+                                Anonymous
+                                {% else %}
+                                {{ payment.sponsor.get_full_name|default:payment.sponsor.username }}
+                                {% endif %}
+                            </p>
+                            <small class="text-muted">{{ payment.payment_date|timesince }} ago</small>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted">Be the first to sponsor!</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sponsorship Modal -->
+<div class="modal fade" id="sponsorshipModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sponsor {{ sponsorship.title }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="sponsorshipForm" onsubmit="event.preventDefault(); processSponsorship()">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Sponsorship Duration</label>
+                        <select class="form-select" id="sponsorshipMonths" onchange="updateAmount()">
+                            <option value="1">1 Month</option>
+                            <option value="3">3 Months</option>
+                            <option value="6">6 Months</option>
+                            <option value="12">12 Months</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Total Amount</label>
+                        <div class="input-group">
+                            <span class="input-group-text">₦</span>
+                            <input type="text" class="form-control" id="totalAmount" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="isRecurring">
+                            <label class="form-check-label" for="isRecurring">
+                                Make this a recurring sponsorship
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="isAnonymous">
+                            <label class="form-check-label" for="isAnonymous">
+                                Keep my sponsorship anonymous
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            Proceed to Payment
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const monthlyAmount = {{ sponsorship.monthly_amount }};
+
+function showSponsorshipModal() {
+    const modal = new bootstrap.Modal(document.getElementById('sponsorshipModal'));
+    modal.show();
+    updateAmount();
+}
+
+function updateAmount() {
+    const months = document.getElementById('sponsorshipMonths').value;
+    const totalAmount = monthlyAmount * months;
+    document.getElementById('totalAmount').value = totalAmount.toFixed(2);
+}
+
+async function processSponsorship() {
+    const form = document.getElementById('sponsorshipForm');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const months = document.getElementById('sponsorshipMonths').value;
+    
+    try {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+        
+        const response = await fetch(`/sponsorships/process/{{ sponsorship.id }}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
+            body: JSON.stringify({
+                months: parseInt(months),
+                is_recurring: document.getElementById('isRecurring').checked,
+                is_anonymous: document.getElementById('isAnonymous').checked
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.status === 'success') {
+            window.location.href = data.payment_link;
+        } else {
+            throw new Error(data.message || 'Payment initialization failed');
+        }
+    } catch (error) {
+        alert(error.message || 'An error occurred. Please try again.');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Proceed to Payment';
+    }
+}
+</script>
+{% endblock %}
